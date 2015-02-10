@@ -9,6 +9,8 @@ Backup MikroTik configuration using SSH and SFTP.
 Add this line to your application's Gemfile:
 
 ```ruby
+gem 'net-ssh'
+gem 'net-sftp'
 gem 'mikrotik-backup'
 ```
 
@@ -18,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install mikrotik-backup
+    $ gem install mikrotik-backup net-ssh net-sftp
 
 ## Usage
 
