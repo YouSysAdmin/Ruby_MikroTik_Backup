@@ -40,7 +40,6 @@ class MTik_backup
   private
   # Function connect to SSH/SFTP host
   def connect_to_host(host,user,password,sftp=false)
-    @sftp = Net::SFTP
     begin
       if sftp
         @log.info("SFTP connect to host #{host}")
