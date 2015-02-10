@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/mikrotik-backup.svg)](http://badge.fury.io/rb/mikrotik-backup)
+
 # Mikrotik Backup
 
 Backup MikroTik configuration using SSH and SFTP.
