@@ -69,6 +69,25 @@ backup.logger(Logger::DEBUG)
 # Full log out to file
 backup.logger(Logger::DEBUG,'backup.log')
 ```
+### Work log (Logger::DEBUG)
+```
+[2015-02-11 13:01:32] INFO: SSH connect to host 192.168.1.1
+[2015-02-11 13:01:36] INFO: Backup MikroTik configuration
+[2015-02-11 13:01:37] INFO: SFTP connect to host 192.168.1.1
+[2015-02-11 13:01:38] INFO: Download file Router1-11-02-2015.backup to ./Router1-11-02-2015.backup
+[2015-02-11 13:01:38] INFO: SSH connect to host 176.xxx.xxx.28
+[2015-02-11 13:01:38] INFO: Backup MikroTik configuration
+[2015-02-11 13:01:39] INFO: SFTP connect to host 176.xxx.xxx.28
+[2015-02-11 13:01:39] INFO: Download file Router2-11-02-2015.backup to ./Router2-11-02-2015.backup
+[2015-02-11 13:01:39] INFO: SSH connect to host 188.xxx.xxx.56
+[2015-02-11 13:01:40] INFO: Backup MikroTik configuration
+[2015-02-11 13:01:41] INFO: SFTP connect to host 188.xxx.xxx.56
+[2015-02-11 13:01:41] INFO: Download file Router3-11-02-2015.backup to ./Router3-11-02-2015.backup
+[2015-02-11 13:01:41] INFO: SSH connect to host 188.xxx.xxx.74
+[2015-02-11 13:01:42] INFO: Backup MikroTik configuration
+[2015-02-11 13:01:42] INFO: SFTP connect to host 188.xxx.xxx.74
+[2015-02-11 13:01:43] INFO: Download file Router4-11-02-2015.backup to ./Router4-11-02-2015.backup
+```
 
 ## Contributing
 
