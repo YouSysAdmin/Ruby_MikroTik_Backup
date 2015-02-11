@@ -22,48 +22,52 @@ Or install it yourself as:
 
 ## Usage
 
+### Backup only
 ```ruby
 
 require 'mikrotik-backup'
+
+#Time format
+time = Time.now.strftime("%d-%m-%Y")
+
 #Config
 # name - associate host name (and name backup file)
 # host - host address
 # user - user name
 # password - user password
 # path - local folder for save backup file. "/var/backup/"
+# format - backup file format, 'binary' or 'script'
 config = [
-    {name:'Router1', host: '10.10.10.1' , user:'admin' , password:'admin', path:'./'},
-    {name:'Router2', host: '10.10.10.2' ,user:'admin' ,password:'admin', path: './'}
+    {name:"Router1-#{time}", host: '10.10.10.1', user:'admin', password:'admin', path:'./', format:'binary'},
+    {name:"Router2-#{time}", host: '10.10.10.2', user:'admin', password:'admin', path:'./', format:'script'}
 ]
 
 
 backup = MTik_backup.new(config)
-# Logging
-backup.logger(Logger::ERROR)
-# Start backup and download
-backup.backup(true) # <-- "false" - enable only create backup and not download
-```
-### Logging
-```ruby
-# Logging only Error, out to console
-logger
-
-# Full log out to console
-logger(Logger::DEBUG)
-
-# Full log out to file 
-logger(Logger::DEBUG,'backup.log')
+# Start backup
+backup.backup
 ```
 
 ### Only Download backup (previously created)
 ```ruby
-config = [
-    {name:'Router1', host: '10.10.10.1' , user:'admin' , password:'admin', path:'./'},
-    {name:'Router2', host: '10.10.10.2' ,user:'admin' ,password:'admin', path: './'}
-]
-
-backup = MTik_backup.new(config)
 backup.download
+```
+
+### Create backup and download
+```ruby
+backup.backup_and_download
+```
+
+### Logging
+```ruby
+# Logging only Error, out to console
+backup.logger(Logger::ERROR) #<- Default
+
+# Full log out to console
+backup.logger(Logger::DEBUG)
+
+# Full log out to file
+backup.logger(Logger::DEBUG,'backup.log')
 ```
 
 ## Contributing

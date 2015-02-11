@@ -2,6 +2,7 @@ require "mikrotik-backup/version"
 require 'net/ssh'
 require 'net/sftp'
 # MikroTik backup class
+# noinspection RubyArgCount
 class MTik_backup
   # Initialize
   def initialize(config)
@@ -20,23 +21,32 @@ class MTik_backup
       "[#{datetime.strftime("%Y-%m-%d %H:%M:%S")}] #{severity}: #{msg}\n"
     }
   end
-
-  # Backup and download MTik config
-  def backup(download=false)
+  # Backup MTik config
+  def backup
     @config.each do |config|
       connect_to_host(config[:host],config[:user],config[:password])
-      backup_config(config[:name])
-      download_backup(config[:host],config[:user],config[:password],config[:name],config[:path]) if download
+      backup_config(config[:name],config[:format])
     end
+    return true
   end
   # Only download MTik config
   def download
     @config.each do |config|
-      download_backup(config[:host],config[:user],config[:password],config[:name],config[:path])
+      download_backup(config[:host],config[:user],config[:password],config[:name],config[:path],config[:format])
     end
+    return true
+  end
+  # Backup and download MTik config
+  def backup_and_download
+    @config.each do |config|
+      connect_to_host(config[:host],config[:user],config[:password])
+      backup_config(config[:name],config[:format])
+      download_backup(config[:host],config[:user],config[:password],config[:name],config[:path],config[:format])
+    end
+    return true
   end
 
-  # Private section
+# Private section
   private
   # Function connect to SSH/SFTP host
   def connect_to_host(host,user,password,sftp=false)
@@ -54,16 +64,25 @@ class MTik_backup
     end
   end
   # Backup function, send SSH command
-  def backup_config(name)
+  def backup_config(name,format='binary')
     @log.info("Backup MikroTik configuration")
-    send_command("/export file=#{name}")
+    if format == 'binary'
+      send_command("/system backup save name=#{name}")
+    elsif format == 'script'
+      send_command("/export file=#{name}")
+    end
     @ssh_connect.close
   end
   # Download backup file from host
-  def download_backup(host,user,password,name,path)
+  def download_backup(host,user,password,name,path,format)
     connect_to_host(host,user,password,true)
-    local_file = path+name+".rsc"
-    remote_file = name+".rsc"
+    if format == 'binary'
+      local_file = path+name+".backup"
+      remote_file = name+".backup"
+    elsif format== 'script'
+      local_file = path+name+".rsc"
+      remote_file = name+".rsc"
+    end
     download_file(remote_file,local_file)
     @ssh_connect.close(@ssh_connect)
   end
