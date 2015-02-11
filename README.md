@@ -89,6 +89,13 @@ backup.logger(Logger::DEBUG,'backup.log')
 [2015-02-11 13:01:43] INFO: Download file Router4-11-02-2015.backup to ./Router4-11-02-2015.backup
 ```
 
+## Problem
+
+```
+ERROR: Creation of file mapping failed with error: 998
+```
+**Close Pageant PuTTY**
+
 ## Contributing
 
 1. Fork it ( https://github.com/POStroi/ruby_mikrotik_backup/fork )
