@@ -33,13 +33,14 @@ time = Time.now.strftime("%d-%m-%Y")
 #Config
 # name - associate host name (and name backup file)
 # host - host address
+# port - port to connect to. If not specified defaults to 22
 # user - user name
 # password - user password
 # path - local folder for save backup file. "/var/backup/"
 # format - backup file format, 'binary' or 'script'
 config = [
     {name:"Router1-#{time}", host: '10.10.10.1', user:'admin', password:'admin', path:'./', format:'binary'},
-    {name:"Router2-#{time}", host: '10.10.10.2', user:'admin', password:'admin', path:'./', format:'script'}
+    {name:"Router2-#{time}", host: '10.10.10.2', port:'2222', user:'admin', password:'admin', path:'./', format:'script'}
 ]
 
 

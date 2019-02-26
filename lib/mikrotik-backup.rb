@@ -7,6 +7,11 @@ class MTik_backup
   # Initialize
   def initialize(config)
     @config = config
+    @config.each do |c|
+      unless c[:port].is_a? Integer
+        c[:port] = 22
+      end
+    end
     logger
   end
   # Setting for Ruby Logger
@@ -24,7 +29,7 @@ class MTik_backup
   # Backup MTik config
   def backup
     @config.each do |config|
-      connect_to_host(config[:host],config[:user],config[:password])
+      connect_to_host(config[:host],config[:port],config[:user],config[:password])
       backup_config(config[:name],config[:format])
     end
     return true
@@ -32,16 +37,16 @@ class MTik_backup
   # Only download MTik config
   def download
     @config.each do |config|
-      download_backup(config[:host],config[:user],config[:password],config[:name],config[:path],config[:format])
+      download_backup(config[:host],config[:port],config[:user],config[:password],config[:name],config[:path],config[:format])
     end
     return true
   end
   # Backup and download MTik config
   def backup_and_download
     @config.each do |config|
-      connect_to_host(config[:host],config[:user],config[:password])
+      connect_to_host(config[:host],config[:port],config[:user],config[:password])
       backup_config(config[:name],config[:format])
-      download_backup(config[:host],config[:user],config[:password],config[:name],config[:path],config[:format])
+      download_backup(config[:host],config[:port],config[:user],config[:password],config[:name],config[:path],config[:format])
     end
     return true
   end
@@ -49,14 +54,14 @@ class MTik_backup
 # Private section
   private
   # Function connect to SSH/SFTP host
-  def connect_to_host(host,user,password,sftp=false)
+  def connect_to_host(host,port,user,password,sftp=false)
     begin
       if sftp
-        @log.info("SFTP connect to host #{host}")
-        @ssh_connect = Net::SFTP.start(host,user,:password=>password)
+        @log.info("SFTP connect to host #{host}:#{port}")
+        @ssh_connect = Net::SFTP.start(host,user,:password=>password,:port=>port)
       else
-        @log.info("SSH connect to host #{host}")
-        @ssh_connect = Net::SSH.start(host,user,:password=>password)
+        @log.info("SSH connect to host #{host}:#{port}")
+        @ssh_connect = Net::SSH.start(host,user,:password=>password,:port=>port)
       end
     rescue Exception => error
       @log.error("#{error}")
@@ -74,8 +79,8 @@ class MTik_backup
     @ssh_connect.close
   end
   # Download backup file from host
-  def download_backup(host,user,password,name,path,format)
-    connect_to_host(host,user,password,true)
+  def download_backup(host,port,user,password,name,path,format)
+    connect_to_host(host,port,user,password,true)
     if format == 'binary'
       local_file = path+name+".backup"
       remote_file = name+".backup"
